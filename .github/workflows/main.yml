@@ -34,3 +34,13 @@ jobs:
       - name: Run Tests
         run: ./gradlew test
         shell: bash
+
+      - name: Check Test Results
+        run: |
+          test_results=$(./gradlew test --quiet)
+          if [[ $test_results == *"FAILURE"* ]]; then
+            echo "Some tests failed. Pull request will be rejected."
+            exit 1
+          else
+            echo "All tests passed. Pull request will be approved."
+          fi
